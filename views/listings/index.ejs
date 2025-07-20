@@ -1,0 +1,170 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+   @media screen and (max-width: 1200px) {
+  #filters {
+    display: none ; /* Hide by default */
+    flex-direction: column;
+  }}
+
+  .filter {
+    margin-top: 2rem;
+    margin-right: 2rem;
+    margin-left: 1.5rem;
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .filter p {
+    font-size: 0.8rem;
+  }
+
+ 
+  .filter a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .filter a:hover {
+    color: inherit;
+  }
+ 
+
+  .tax-info{
+    display:none;
+  }
+  .tax-toggle{
+    border: 1px solid black;
+    border-radius: 1rem;
+    height: 3.25rem;
+    padding:1rem;
+  
+ 
+    display: flex;
+    align-items: center;
+  }
+
+</style>
+
+<body>
+  
+  <div id="filters" class="collapse">
+    <div class="filter">
+      <a href="/listings?category=Trending">
+        <div><i class="fa-solid fa-fire "></i></div>
+        <p>Trending</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Rooms">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Iconic Cities">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Camping">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Farms">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Mountains">
+        <div><i class="fa-solid fa-mountain-sun"></i></div>
+        <p>Mountains</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Castle">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castle</p>
+      </a>
+    </div>
+
+    <div class="filter">
+      <a href="/listings?category=Artic">
+        <div><i class="fa-solid fa-snowman"></i></div>
+        <p>Artic</p>
+      </a>
+    </div>
+
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+</div>
+    </div>
+
+  </div>
+  
+
+  <!--       -->
+  <% if (allListings.length === 0) { %>
+  <div class="text-center mt-5">
+    <h3>No listings found 😞</h3>
+    <p>Try adjusting your filters or search query.</p>
+  </div>
+<% } else { %>
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+    <% for (let listing of allListings) { %>
+      <div class="col mb-4">
+        <a href="/listings/<%= listing._id %>" class="listing-links" style="text-decoration: none; color: inherit;">
+          <div class="card listing-card h-100">
+            <img src="<%= listing.image.url || 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60' %>"
+              class="card-img-top" alt="listing_image" style=" height:20rem; object-fit:cover;">
+            <div class="card-img-overlay"></div>
+            <div class="card-body">
+              <p class="card-text">
+                <b><%= listing.title %></b> <br />
+                &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %> / night
+                        <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+  <% } %>
+</body>
+
+<script>
+  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+  taxSwitch.addEventListener("click",()=>{
+    let taxInfo = document.getElementsByClassName("tax-info")
+    for(info of taxInfo){
+      if(info.style.display != "inline"){
+        info.style.display= "inline"
+      }else{
+      info.style.display= "none"
+      }
+    }
+  })
+</script>
